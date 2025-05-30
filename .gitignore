@@ -1,0 +1,19 @@
+# Compilação
+bin/
+obj/
+
+# Arquivos temporário/depuração
+*.tmp
+*.log
+*.cache
+*.suo
+*.pdb
+
+# Configurações de IDEs
+.vscode/
+.vs/
+.idea/
+
+# Arquivos dotnet
+appsettings.Development.json
+Properties/launchSettings.json

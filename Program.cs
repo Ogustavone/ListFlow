@@ -1,3 +1,5 @@
+using ListFlow.Routes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -13,7 +15,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/{name}", (string name) => $"Hello, {name}!");
+app.TaskRoutes();
+app.UserRoutes();
 
 app.Run();

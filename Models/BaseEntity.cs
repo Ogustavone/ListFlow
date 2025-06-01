@@ -1,6 +1,6 @@
 namespace ListFlow.Models;
 
-public class BaseEntity : IAuditable
+public class BaseEntity
 {
     /// <summary>
     /// Unique identifier for the entity.
@@ -17,9 +17,12 @@ public class BaseEntity : IAuditable
     /// Last updated datetime of the entity (UTC).
     /// IAuditable implementation. Can be null.
     /// </summary>
-    public DateTime? UpdatedAt { get; set; } = null;
+    public DateTime? UpdatedAt { get; private set; } = null;
 
-    public void UpdateEntity()
+    /// <summary>
+    /// Updates property "UpdatedAt" to the current UTC datetime.
+    /// </summary>
+    public void UpdateDateTime()
     {
         UpdatedAt = DateTime.UtcNow;
     }

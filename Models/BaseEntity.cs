@@ -5,13 +5,13 @@ public class BaseEntity
     /// <summary>
     /// Unique identifier for the entity.
     /// </summary>
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid Id { get; } = Guid.NewGuid();
 
     /// <summary>
     /// Datetime (UTC) when the entity was created.
     /// IAutitable implementation.
     /// </summary>
-    public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; } = DateTime.UtcNow;
 
     /// <summary>
     /// Last updated datetime of the entity (UTC).

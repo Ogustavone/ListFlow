@@ -1,39 +1,22 @@
-using BCrypt.Net;
 using static BCrypt.Net.BCrypt;
 
 namespace ListFlow.Models
 {
-    public class UserModel : BaseEntity
+    public class UserModel(string name, string pass) : BaseEntity
     {
-        private string _passwordHash = string.Empty;
+        private readonly string _password = GetEncryptedPassword(pass);
+        public string Name { get; set; } = name;
+        public string Password { get => _password; }
 
-        public string Username { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-
-        public string Password
+        private static string GetEncryptedPassword(string strPassword)
         {
-            get
-            {
-                return _passwordHash;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Erro: A senha não pode receber um valor nulo ou vazio.");
-                }
-                _passwordHash = GetPasswordHash(value);
-            }
+            string passwordHash = HashPassword(strPassword);
+            return passwordHash;
         }
 
-        public string GetPasswordHash(string cleanPassword)
+        public bool ValidatePassword(string strPassword)
         {
-            return HashPassword(cleanPassword, 12);
-        }
-
-        public bool PasswordHashIsValid(string cleanPassword, string hashedPassword)
-        {
-            return Verify(cleanPassword, hashedPassword);
+            return Verify(strPassword, _password);
         }
     }
 }

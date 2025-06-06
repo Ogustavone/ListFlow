@@ -5,7 +5,7 @@ public class BaseEntity
     /// <summary>
     /// Unique identifier for the entity.
     /// </summary>
-    public Guid Id { get; init; } = new Guid();
+    public Guid Id { get; init; } = Guid.NewGuid();
 
     /// <summary>
     /// Datetime (UTC) when the entity was created.

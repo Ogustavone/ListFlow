@@ -5,7 +5,7 @@ public class BaseEntity
     /// <summary>
     /// Unique identifier for the entity.
     /// </summary>
-    public Guid Id { get; } = Guid.NewGuid();
+    public Guid Id { get; private set; } = Guid.NewGuid();
 
     /// <summary>
     /// Datetime (UTC) when the entity was created.
@@ -17,7 +17,7 @@ public class BaseEntity
     /// Last updated datetime of the entity (UTC).
     /// IAuditable implementation. Can be null.
     /// </summary>
-    public DateTime? UpdatedAt { get; private set; } = null;
+    public DateTime UpdatedAt { get; private set; }
 
     /// <summary>
     /// Updates property "UpdatedAt" to the current UTC datetime.

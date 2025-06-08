@@ -2,21 +2,27 @@ using static BCrypt.Net.BCrypt;
 
 namespace ListFlow.Models
 {
-    public class UserModel(string name, string pass) : BaseEntity
+    public class UserModel : BaseEntity
     {
-        private readonly string _password = GetEncryptedPassword(pass);
-        public string Name { get; set; } = name;
-        public string Password { get => _password; }
+        public UserModel() { }
+
+        public UserModel(string name, string pass)
+        {
+            Name = name;
+            Password = GetEncryptedPassword(pass);
+        }
+
+        public string Name { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
         private static string GetEncryptedPassword(string strPassword)
         {
-            string passwordHash = HashPassword(strPassword);
-            return passwordHash;
+            return HashPassword(strPassword);
         }
 
         public bool ValidatePassword(string strPassword)
         {
-            return Verify(strPassword, _password);
+            return Verify(strPassword, Password);
         }
     }
 }

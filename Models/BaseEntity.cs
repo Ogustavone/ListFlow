@@ -11,7 +11,7 @@ public class BaseEntity
     /// Datetime (UTC) when the entity was created.
     /// IAutitable implementation.
     /// </summary>
-    public DateTime CreatedAt { get; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Last updated datetime of the entity (UTC).

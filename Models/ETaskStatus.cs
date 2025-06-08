@@ -1,6 +1,6 @@
 namespace ListFlow.Models;
 
-public enum TaskStatus
+public enum ETaskStatus
 {
     Backlog,
     Pending,

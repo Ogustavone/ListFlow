@@ -16,17 +16,26 @@ Api desenvolvida para gerenciamento de tarefas e serviços seguindo a metodologi
 - .NET 8.0.16
 - Entity Framework 8.0.16
 - PostgreSQL 16
-## Rotas/Endpoints
-```
-GET:
-    api/tasks
-    api/users
-    api/tasks/id
-    api/users/id
-POST:
-    api/tasks
-    api/users
-PUT:
-    api/tasks/id
-    api/users/id
-```
+
+## Endpoints
+- #### Tasks (api/tasks)
+
+| Método    | Rota                      | Descrição                     |
+| ---       | ---                       | ----------------------------- |
+| `GET`     | **api/tasks**             | Retorna todas as tarefas      |
+| `GET`     | **api/tasks/id**          | Busca uma tarefa pelo ID      |
+| `POST`    | **api/tasks/**            | Adiciona uma nova tarefa      |
+| `DELETE`  | **api/tasks/id**          | Deleta a tarefa pelo ID       |
+| `PUT`     | **api/tasks/id**          | Atualiza a tarefa pelo ID     |
+| `PATCH`   | **api/tasks/id/status**   | Atualiza o status da tarefa   |
+
+- #### Users (Não implementado)
+
+| Método    | Rota                      | Descrição                     |
+| --------- | ------------------------- | ----------------------------- |
+| `GET`     | **api/users**             | Retorna todos usuários        |
+| `GET`     | **api/users/id**          | Retorna o usuário pelo ID     |
+| `POST`    | **api/users/**            | Adiciona um novo usuário      |
+| `DELETE`  | **api/users/id**          | Deleta o usuário pelo ID      |
+| `PUT`     | **api/users/id**          | Atualiza o usuário pelo ID    |
+

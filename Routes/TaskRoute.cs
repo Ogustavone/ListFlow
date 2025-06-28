@@ -10,25 +10,6 @@ public static class TaskRoute
     {
         var route = app.MapGroup("tasks");
 
-        // POST /tasks
-        route.MapPost("", async (TaskRequest req, AppDbContext context) =>
-        {
-            if (req.Title is null)
-            {
-                return Results.BadRequest("You need to assign a title to the task.");
-            }
-            var newTask = new TaskModel
-            {
-                Title = req.Title,
-                Description = req.Description ?? string.Empty,
-                Tags = req.Tags ?? []
-            };
-
-            await context.AddAsync(newTask);
-            await context.SaveChangesAsync();
-            return Results.Ok(newTask);
-        });
-
         // GET /tasks
         route.MapGet("", async (AppDbContext context) =>
         {
@@ -43,9 +24,43 @@ public static class TaskRoute
             return task != null ? Results.Ok(task) : Results.NotFound();
         });
 
-        // PUT /tasks/{id}
-        route.MapPut("{id:guid}", async (Guid id, TaskRequest req, AppDbContext context) =>
+        // POST /tasks
+        route.MapPost("", async (TaskRequest req, AppDbContext context) =>
         {
+            var newTask = new TaskModel
+            {
+                Title = req.Title,
+                Description = req.Description ?? string.Empty,
+                Tags = req.Tags ?? []
+            };
+
+            await context.AddAsync(newTask);
+            await context.SaveChangesAsync();
+            return Results.Created($"/tasks/{newTask.Id}", newTask);
+        });
+
+        // DELETE /tasks/{id}
+        route.MapDelete("{id:guid}", async (Guid id, AppDbContext context) =>
+        {
+            var task = await context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                return Results.NotFound();
+            }
+
+            context.Tasks.Remove(task);
+            await context.SaveChangesAsync();
+            return Results.Ok($"Task {task.Title} is deleted.");
+        });
+
+        // PATCH /tasks/{id}
+        route.MapPatch("{id:guid}", async (Guid id, TaskPatchRequest req, AppDbContext context) =>
+        {
+            if (req == null)
+            {
+                return Results.BadRequest("Patch request body is required.");
+            }
+
             var task = await context.Tasks.FindAsync(id);
             if (task == null)
             {
@@ -56,41 +71,33 @@ public static class TaskRoute
             task.Description = req.Description ?? task.Description;
             task.Tags = req.Tags ?? task.Tags;
 
-            context.Tasks.Update(task);
-            await context.SaveChangesAsync();
-            return Results.Ok(task);
-        });
-
-        // PATCH /tasks/{id}/status
-        route.MapPatch("{id:guid}/status", async (Guid id, ETaskStatus status, AppDbContext context) =>
-        {
-            //FIXME: Tratar exceção quando passar status diferente do model.
-            var task = await context.Tasks.FindAsync(id);
-            if (task == null)
+            if (req.Status != null)
             {
-                return Results.NotFound();
+                if (!Enum.IsDefined(typeof(StatusType), req.Status.Value))
+                {
+                    return Results.BadRequest("Invalid status value.");
+                }
+                task.Status = req.Status.Value;
             }
-            task.Status = status;
-            context.Tasks.Update(task);
+
             await context.SaveChangesAsync();
             return Results.Ok(task);
         });
 
-        // DELETE /tasks/{id}
-        route.MapDelete("{id:guid}", async (Guid id, bool confirm, AppDbContext context) =>
+        // PUT /tasks/{id}
+        route.MapPut("{id:guid}", async (Guid id, TaskPutRequest req, AppDbContext context) =>
         {
             var task = await context.Tasks.FindAsync(id);
             if (task == null)
             {
                 return Results.NotFound();
             }
-            else if (!confirm)
-            {
-                return Results.Unauthorized();
-            }
-            context.Tasks.Remove(task);
+
+            task.Title = req.Title;
+            task.Description = req.Description;
+
             await context.SaveChangesAsync();
-            return Results.Ok($"Task {task.Title} is deleted.");
+            return Results.Ok(task);
         });
     }
 }

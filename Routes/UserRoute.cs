@@ -4,6 +4,12 @@ public static class UserRoute
 {
     public static void UserRoutes(this WebApplication app)
     {
-        app.MapGet("/users", () => "rota /users");
+        var route = app.MapGroup("users");
+
+        // GET /users
+        // GET /users/id
+        // POST /users
+        // DELETE /users/id
+        // PUT /users/id
     }
 }
